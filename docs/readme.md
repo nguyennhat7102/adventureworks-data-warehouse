@@ -1,6 +1,11 @@
 # Project: AdventureWorks Sales Data Warehouse & Business Intelligence
 
+
 # 1. Project Overview
+
+<p align="center">
+    <img src="work_flow.png" width="700">
+</p>
 
 ### Mục tiêu
 
@@ -13,6 +18,18 @@ Các nội dung chính của dự án bao gồm:
 - Thực hiện các bài toán phân tích kinh doanh bằng SQL.
 - Xây dựng dashboard trên Power BI để trực quan hóa các chỉ số quan trọng về doanh thu, lợi nhuận, khách hàng và sản phẩm.
 
+###  **Tools & Technologies**
+
+<div align="center">
+<img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+<img src="https://img.shields.io/badge/SQL-4479A1?style=for-the-badge&logo=databricks&logoColor=white" alt="SQL" />
+<img src="https://img.shields.io/badge/Power%20BI%20%26%20DAX-F2C811?style=for-the-badge&logo=powerbi&logoColor=black" alt="Power BI & DAX" />
+  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
+  <img src="https://img.shields.io/badge/Jupyter-F37626?style=for-the-badge&logo=jupyter&logoColor=white" alt="Jupyter" />
+  <img src="https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white" alt="Pandas" />
+  <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" alt="Git" />
+
+</div>
 
 
 ---
