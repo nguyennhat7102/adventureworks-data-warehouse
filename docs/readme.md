@@ -1,426 +1,424 @@
-# Project: AdventureWorks Sales Data Warehouse & Business Intelligence
+ # Project: AdventureWorks Sales Data Warehouse & Business Intelligence
 
 
-# 1. Project Overview
+ # 1. Project Overview
 
-<p align="center">
-    <img src="work_flow.png" width="700">
-</p>
+ <p align="center">
+     <img src="work_flow.png" width="700">
+ </p>
 
-### Mục tiêu
+ ### Objective
 
-Xây dựng một hệ thống **Data Warehouse** hoàn chỉnh từ dữ liệu bán hàng **AdventureWorks** theo quy trình **ETL (Extract – Transform – Load)**. Sau khi làm sạch và biến đổi dữ liệu, xây dựng mô hình **Star Schema** trên **PostgreSQL**, sử dụng **SQL** để phân tích hiệu suất kinh doanh và trực quan hóa các kết quả bằng **Power BI**, từ đó hỗ trợ ra quyết định dựa trên dữ liệu.
+ Build a complete **Data Warehouse** solution from the **AdventureWorks** sales dataset following an **ETL (Extract – Transform – Load)** process. After cleaning and transforming the data, design a **Star Schema** in **PostgreSQL**, use **SQL** for business performance analysis, and visualize results in **Power BI** to support data-driven decision making.
 
-Các nội dung chính của dự án bao gồm:
+ Key project tasks:
 
-- Xây dựng quy trình ETL bằng Python (Pandas).
-- Thiết kế và triển khai Star Schema trên PostgreSQL.
-- Thực hiện các bài toán phân tích kinh doanh bằng SQL.
-- Xây dựng dashboard trên Power BI để trực quan hóa các chỉ số quan trọng về doanh thu, lợi nhuận, khách hàng và sản phẩm.
+ - Implement an ETL pipeline using Python (Pandas).
+ - Design and deploy a Star Schema in PostgreSQL.
+ - Perform business analytics using SQL.
+ - Build Power BI dashboards to visualize key metrics for revenue, profit, customers, and products.
 
-###  **Tools & Technologies**
+ ### Tools & Technologies
 
-<div align="center">
-<img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
-<img src="https://img.shields.io/badge/SQL-4479A1?style=for-the-badge&logo=databricks&logoColor=white" alt="SQL" />
-<img src="https://img.shields.io/badge/Power%20BI%20%26%20DAX-F2C811?style=for-the-badge&logo=powerbi&logoColor=black" alt="Power BI & DAX" />
-  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
-  <img src="https://img.shields.io/badge/Jupyter-F37626?style=for-the-badge&logo=jupyter&logoColor=white" alt="Jupyter" />
-  <img src="https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white" alt="Pandas" />
-  <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" alt="Git" />
+ <div align="center">
+ <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+ <img src="https://img.shields.io/badge/SQL-4479A1?style=for-the-badge&logo=databricks&logoColor=white" alt="SQL" />
+ <img src="https://img.shields.io/badge/Power%20BI%20%26%20DAX-F2C811?style=for-the-badge&logo=powerbi&logoColor=black" alt="Power BI & DAX" />
+   <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
+   <img src="https://img.shields.io/badge/Jupyter-F37626?style=for-the-badge&logo=jupyter&logoColor=white" alt="Jupyter" />
+   <img src="https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white" alt="Pandas" />
+   <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" alt="Git" />
 
-</div>
+ </div>
 
+ ---
 
----
+ # 2. ETL Pipeline
 
-# 2. ETL Pipeline
+ ## 2.1 Extract Data
 
-## 2.1 Extract Data
+ ### Objective
 
-### Mục tiêu
+ Collect raw data from multiple sources into a **Staging** area to prepare for processing.
 
-Thu thập dữ liệu từ nhiều nguồn và đưa vào **Staging** để chuẩn bị cho quá trình xử lý.
+ ### Data sources
 
-### Nguồn dữ liệu
+ - customer.csv
+ - products.csv
+ - sales.csv
+ - geography.csv
+ - date.csv
 
-- customer.csv
-- products.csv
-- sales.csv
-- geography.csv
-- date.csv
+ ### Tasks
 
-### Công việc thực hiện
+ - Read data using **Pandas**
+ - Perform **Data Profiling**
 
-- Đọc dữ liệu bằng **Pandas**
-- Thực hiện **Data Profiling**
+ ### Data Profiling
 
-### Data Profiling
+ Check for:
 
-Kiểm tra các thông tin:
+ - Record counts
+ - Number of attributes
+ - Data types
+ - NULL values
+ - Duplicates
+ - Data distributions
 
-- Số lượng bản ghi
-- Số lượng thuộc tính
-- Kiểu dữ liệu
-- Giá trị NULL
-- Giá trị trùng lặp
-- Phân phối dữ liệu
+ Example:
 
-Ví dụ:
+ ```python
+ sales.info()
 
-```python
-sales.info()
+ sales.describe()
 
-sales.describe()
+ sales.isnull().sum()
 
-sales.isnull().sum()
+ sales.duplicated().sum()
+ ```
 
-sales.duplicated().sum()
-```
+ ---
 
----
+ # 2.2 Transform Data
 
-# 2.2 Transform Data
+ ## Objective
 
-## Mục tiêu
+ Clean, standardize, and transform data to ensure consistency and reliability before building the Data Warehouse.
 
-Làm sạch, chuẩn hóa và biến đổi dữ liệu nhằm đảm bảo tính nhất quán và độ tin cậy trước khi xây dựng Data Warehouse.
+ ---
 
----
+ ## 2.2.1 Data Cleaning
 
-## 2.2.1 Data Cleaning
+ ### Handling Missing Values
 
-### Xử lý dữ liệu thiếu (Missing Values)
+ #### Products
 
-#### Products
+ Some products, such as:
 
-Một số sản phẩm như:
+ - HL Road Frame
+ - Mountain Frame
+ - Touring Frame
 
-- HL Road Frame
-- Mountain Frame
-- Touring Frame
+ may have missing fields like:
 
-có thể thiếu:
+ - StandardCost
+ - Color
 
-- StandardCost
-- Color
+ ---
 
----
+ ### Option 1: Fill with zero
 
-### Phương án 1: Điền giá trị 0
+ #### When to use
 
-#### Khi nào sử dụng
+ - Cost values are not available yet.
+ - You want to keep the product in the dataset.
+ - Missing data rate is very small.
+ - Analysis focuses on revenue or quantity only.
 
-- Giá vốn chưa được cập nhật.
-- Muốn giữ sản phẩm trong hệ thống.
-- Dữ liệu thiếu chiếm tỷ lệ rất nhỏ.
-- Chỉ phục vụ thống kê doanh thu hoặc số lượng.
+ #### Implementation
 
-#### Thực hiện
+ ```python
+ product['StandardCost'] = product['StandardCost'].fillna(0)
+ ```
 
-```python
-product['StandardCost'] = product['StandardCost'].fillna(0)
-```
+ #### Advantages
 
-#### Ưu điểm
+ - Simple.
+ - Preserves records.
+ - Does not reduce sample size.
 
-- Đơn giản.
-- Không làm mất dữ liệu.
-- Không ảnh hưởng số lượng bản ghi.
+ #### Trade-offs
 
-#### Nhược điểm (Trade-off)
+ Profit will be overestimated:
 
-Lợi nhuận sẽ bị tính cao hơn thực tế:
+ ```text
+ Profit = SalesAmount - 0
+ ```
 
-```text
-Profit = SalesAmount - 0
-```
+ ---
 
----
+ ### Option 2: Fill with the average StandardCost of the SubCategory
 
-### Phương án 2: Điền bằng giá vốn trung bình của SubCategory
+ #### When to use
 
-#### Khi nào sử dụng
+ - Products in the same SubCategory have similar costs.
+ - You want to retain full records while keeping reasonable estimates for analysis.
 
-- Các sản phẩm trong cùng SubCategory có mức giá vốn tương đối giống nhau.
-- Muốn giữ đầy đủ dữ liệu nhưng vẫn đảm bảo tính hợp lý khi phân tích.
+ #### Implementation
 
-#### Thực hiện
+ ```python
+ product['StandardCost'] = (
+     product.groupby('SubCategory')['StandardCost']
+            .transform(lambda x: x.fillna(x.mean()))
+ )
+ ```
 
-```python
-product['StandardCost'] = (
-    product.groupby('SubCategory')['StandardCost']
-           .transform(lambda x: x.fillna(x.mean()))
-)
-```
+ #### Advantages
 
-#### Ưu điểm
+ - Preserves records.
+ - More reasonable cost estimates.
+ - Profit analysis is closer to reality.
 
-- Giữ nguyên số lượng dữ liệu.
-- Giá vốn hợp lý hơn.
-- Phân tích lợi nhuận sát thực tế hơn.
+ #### Trade-offs
 
-#### Nhược điểm (Trade-off)
+ - Only an approximation.
+ - Not suitable if cost variability within SubCategory is high.
 
-- Chỉ là giá trị ước lượng.
-- Không phản ánh tốt nếu sự chênh lệch giá trong cùng SubCategory quá lớn.
+ ---
 
----
+ ### Option 3: Drop records
 
-### Phương án 3: Xóa bản ghi
+ #### When to use
 
-#### Khi nào sử dụng
+ - Missing data is minimal (<5%).
+ - No reasonable basis for imputation.
+ - Analysis requires high accuracy.
 
-- Dữ liệu thiếu rất ít (<5%).
-- Không có cơ sở hợp lý để ước lượng.
-- Phân tích yêu cầu độ chính xác cao.
+ #### Implementation
 
-#### Thực hiện
+ ```python
+ product = product.dropna(subset=['StandardCost'])
+ ```
 
-```python
-product = product.dropna(subset=['StandardCost'])
-```
+ #### Advantages
 
-#### Ưu điểm
+ - Avoids injecting assumed values.
+ - Ensures calculations use real data.
 
-- Không đưa dữ liệu giả định vào hệ thống.
-- Đảm bảo các phép tính dựa trên dữ liệu thực.
+ #### Trade-offs
 
-#### Nhược điểm (Trade-off)
+ - Reduces data size.
+ - May cause selection bias if missingness is not random.
 
-- Làm giảm số lượng dữ liệu.
-- Có thể gây Selection Bias nếu dữ liệu thiếu không ngẫu nhiên.
+ ---
 
----
+ ### Remove duplicates
 
-### Xử lý dữ liệu trùng lặp
+ ```python
+ sales.drop_duplicates(inplace=True)
+ ```
 
-```python
-sales.drop_duplicates(inplace=True)
-```
+ ---
 
----
+ ### String normalization
 
-### Chuẩn hóa dữ liệu chuỗi
+ Steps:
 
-Thực hiện:
+ - Trim whitespace.
+ - Standardize case.
 
-- Loại bỏ khoảng trắng thừa.
-- Đồng nhất chữ hoa/chữ thường.
+ Example:
 
-Ví dụ:
+ ```python
+ customer['Gender'] = customer['Gender'].str.upper()
+ ```
 
-```python
-customer['Gender'] = customer['Gender'].str.upper()
-```
+ ---
 
----
+ ## 2.2.2 Data Modeling
 
-## 2.2.2 Data Modeling
+ ### Normalize Geography table
 
-### Chuẩn hóa bảng Geography
+ #### Purpose
 
-#### Mục đích
+ Normalize geographical data by splitting **geography.csv** into two dimension tables to reduce redundancy and fit the **Star Schema** design.
 
-Chuẩn hóa dữ liệu địa lý bằng cách tách bảng **geography.csv** thành hai bảng Dimension nhằm giảm trùng lặp dữ liệu và phù hợp với mô hình **Star Schema**.
+ #### Implementation
 
-#### Cách thực hiện
+ **dim_geography**
 
-**dim_geography**
+ - GeographyKey
+ - City
+ - PostalCode
+ - CountryName
+ - SalesTerritoryKey
 
-- GeographyKey
-- City
-- PostalCode
-- CountryName
-- SalesTerritoryKey
+ **dim_sales_territory**
 
-**dim_sales_territory**
+ - SalesTerritoryKey
+ - SalesTerritoryRegion
+ - SalesTerritoryGroup
 
-- SalesTerritoryKey
-- SalesTerritoryRegion
-- SalesTerritoryGroup
+ #### Benefits
 
-#### Ý nghĩa
+ - Reduces redundancy.
+ - Aligns with normalization (3NF) principles.
+ - Improves reusability of sales territory information across analyses.
 
-- Giảm trùng lặp dữ liệu.
-- Chuẩn hóa dữ liệu theo nguyên tắc 3NF.
-- Tăng khả năng tái sử dụng thông tin vùng bán hàng trong các phân tích.
+ ---
 
----
+ ## 2.2.3 Feature Engineering
 
-## 2.2.3 Feature Engineering
+ ### Create `order_key`
 
-### Tạo `order_key`
+ #### Purpose
 
-#### Mục đích
+ The grain of the **fact_sales** table is at the **Product Line** level, meaning each row represents a product in an order.
 
-Grain của bảng **fact_sales** nằm ở mức **Product Line**, nghĩa là mỗi dòng biểu diễn một sản phẩm trong một đơn hàng.
+ Since the dataset does not provide a distinct order identifier, create an **order_key** based on:
 
-Do bộ dữ liệu không cung cấp mã đơn hàng riêng nên tạo thêm **order_key** dựa trên:
+ ```text
+ (customer_key, order_date)
+ ```
 
-```text
-(customer_key, order_date)
-```
+ #### Business Logic
 
-#### Business Logic
+ 1. Extract unique `(customer_key, order_date)` pairs.
+ 2. Sort by `customer_key` and `order_date`.
+ 3. Assign `order_key` sequentially using `DENSE_RANK()`.
+ 4. Merge `order_key` back into `fact_sales`.
 
-1. Lấy các cặp `(customer_key, order_date)`.
-2. Sắp xếp theo `customer_key` và `order_date`.
-3. Gán `order_key` tuần tự bằng `DENSE_RANK()`.
-4. Merge `order_key` trở lại bảng `fact_sales`.
+ #### Benefits
 
-#### Ý nghĩa
+ Enables analyses such as:
 
-Việc tạo `order_key` giúp thực hiện các phân tích:
+ - Number of Orders
+ - Average Order Value (AOV)
+ - Purchase Frequency
+ - Cohort Analysis
+ - Customer Lifetime Value (CLV)
 
-- Number of Orders
-- Average Order Value (AOV)
-- Purchase Frequency
-- Cohort Analysis
-- Customer Lifetime Value (CLV)
+ ---
 
----
+ ## 2.2.4 Export Curated Dataset
 
-## 2.2.4 Export Curated Dataset
+ ### Objective
 
-### Mục tiêu
+ After cleaning and transformation, export tables to new CSV files to build a **Curated Dataset**.
 
-Sau khi hoàn thành quá trình làm sạch và biến đổi dữ liệu, các bảng được xuất thành các file CSV mới để tạo thành **Curated Dataset**.
+ This curated data will be the input for loading into the Data Warehouse.
 
-Đây sẽ là nguồn dữ liệu đầu vào cho quá trình xây dựng Data Warehouse.
+ ### Benefits
 
-### Lợi ích
+ - Separates raw and processed data.
+ - Makes ETL results easy to validate before loading.
+ - Facilitates reuse across different database systems.
+ - Improves maintainability and scalability of the ETL process.
 
-- Tách biệt dữ liệu gốc (Raw Data) và dữ liệu đã xử lý (Curated Data).
-- Dễ dàng kiểm tra kết quả ETL trước khi Load.
-- Hỗ trợ tái sử dụng cho nhiều hệ quản trị cơ sở dữ liệu.
-- Giúp quy trình ETL dễ bảo trì và mở rộng.
+ ---
 
----
+ # 3. Load Data Warehouse
 
-# 3. Load Data Warehouse
+ ### Objective
+ - After cleaning and standardizing the data, load it into PostgreSQL and build a **Data Warehouse** using a **Star Schema** to optimize querying, aggregation, and visualization in Power BI.
 
-### Mục tiêu
-- Sau khi dữ liệu đã được làm sạch và chuẩn hóa, tiến hành nạp (Load) dữ liệu vào PostgreSQL và xây dựng **Data Warehouse** theo mô hình **Star Schema** nhằm tối ưu cho việc truy vấn, tổng hợp và trực quan hóa dữ liệu trên Power BI.
+ ## 3.1 Star Schema Design
 
-## 3.1 Thiết kế Star Schema
+ The model consists of a central Fact table surrounded by Dimension tables.
 
-Mô hình bao gồm một bảng Fact ở trung tâm và các bảng Dimension xung quanh.
+ ### Fact Table
 
-### Fact Table
+ ### Fact_Sales
 
-### Fact_Sales
+ The fact table stores measures related to sales operations.
 
-Bảng Fact lưu trữ các chỉ số (Measures) của hoạt động bán hàng.
+ **Measures**
 
-**Measures**
+ | Column | Description |
+ | --- | --- |
+ | order_quantity | Quantity of products sold |
+ | product_standard_cost | Product cost at time of sale |
+ | sales_amount | Sales revenue |
 
-| Column | Mô tả |
-| --- | --- |
-| order_quantity | Số lượng sản phẩm bán |
-| product_standard_cost | Giá vốn của sản phẩm tại thời điểm bán |
-| sales_amount | Doanh thu bán hàng |
+ **Foreign Keys**
 
-**Foreign Keys**
+ | Column | References |
+ | --- | --- |
+ | product_key | Dim_Product |
+ | customer_key | Dim_Customer |
+ | sales_territory_key | Dim_Sales_Territory |
+ | order_date_key | Dim_Date |
 
-| Column | Tham chiếu |
-| --- | --- |
-| product_key | Dim_Product |
-| customer_key | Dim_Customer |
-| sales_territory_key | Dim_Sales_Territory |
-| order_date_key | Dim_Date |
+ > **Note:** Measures like **Profit**, **Profit Margin**, and **Average Selling Price** should not be stored in the Fact table; compute them dynamically using DAX in Power BI to avoid redundancy and ensure consistency when business logic changes.
+ >
+ ---
+ ### Dimension Tables
+ ### Dim_Customer
 
-> **Lưu ý:** Các chỉ số như **Profit**, **Profit Margin**, **Average Selling Price** sẽ **không nên lưu trong Fact Table** mà được tính động bằng DAX trong Power BI nhằm giảm dư thừa dữ liệu và đảm bảo tính nhất quán khi nghiệp vụ thay đổi.
->
----
-### Dimension Tables
-### Dim_Customer
+ Stores descriptive customer attributes for analysis by gender, marital status, and geography.
 
-Lưu trữ thông tin mô tả của khách hàng phục vụ phân tích theo giới tính, tình trạng hôn nhân và khu vực địa lý.
+ | Attribute | Data Type | Description |
+ | --- | --- | --- |
+ | customer_key | INT | Primary key for the customer table. |
+ | customer_name | VARCHAR(50) | Customer full name. |
+ | birth_date | DATE | Customer birth date. |
+ | gender | VARCHAR(50) | Customer gender (Male/Female). |
+ | marital_status | VARCHAR(50) | Marital status (Single/Married). |
+ | geography_key | INT | Foreign key referencing `dim_geography`, indicating customer location. |
 
-| Thuộc tính | Kiểu dữ liệu | Mô tả |
-| --- | --- | --- |
-| customer_key | INT | Khóa chính của bảng khách hàng. |
-| customer_name | VARCHAR(50) | Họ và tên đầy đủ của khách hàng. |
-| birth_date | DATE | Ngày sinh của khách hàng. |
-| gender | VARCHAR(50) | Giới tính của khách hàng (Male/Female). |
-| marital_status | VARCHAR(50) | Tình trạng hôn nhân của khách hàng (Single/Married). |
-| geography_key | INT | Khóa ngoại tham chiếu đến bảng **dim_geography**, xác định vị trí địa lý của khách hàng. |
+ > **Feature Engineering**
+ >
+ > Add an `AgeGroup` attribute derived from `BirthDate` to support age-segment analysis.
+ >
+ > | Attribute | Data Type | Description |
+ > | --- | --- | --- |
+ > | age_group | VARCHAR(20) | Customer age group (Youth, Adult, Middle Age, Senior). |
+ ### Dim_Product
 
-> **Feature Engineering**
-> 
-> 
-> Bổ sung thuộc tính **AgeGroup** được suy diễn từ `BirthDate` nhằm hỗ trợ phân tích phân khúc khách hàng theo độ tuổi.
-> 
-> | Thuộc tính | Kiểu dữ liệu | Mô tả |
-> | --- | --- | --- |
-> | age_group | VARCHAR(20) | Nhóm tuổi của khách hàng (Youth, Adult, Middle Age, Senior). |
-### Dim_Product
+ Stores product information.
+ | Attribute    | Data Type  | Description                         |
+ | ------------- | ------------- | ----------------------------- |
+ | product_key   | INT           | Primary key for the product table. |
+ | product_name  | VARCHAR(50)  | Product name.                 |
+ | category      | VARCHAR(50)   | Product category.            |
+ | sub_category  | VARCHAR(50)   | Product sub-category.    |
+ | standard_cost | DECIMAL(18,2) | Product cost.         |
+ | color         | VARCHAR(30)   | Product color.         |
+ | model_name    | VARCHAR(100)  | Product model name. |
+ | status        | VARCHAR(20)   | Product status.      |
 
-Lưu trữ thông tin sản phẩm.
-| Thuộc tính    | Kiểu dữ liệu  | Mô tả                         |
-| ------------- | ------------- | ----------------------------- |
-| product_key   | INT           | Khóa chính của bảng sản phẩm. |
-| product_name  | VARCHAR(50)  | Tên sản phẩm.                 |
-| category      | VARCHAR(50)   | Danh mục sản phẩm.            |
-| sub_category  | VARCHAR(50)   | Danh mục con của sản phẩm.    |
-| standard_cost | DECIMAL(18,2) | Giá vốn của sản phẩm.         |
-| color         | VARCHAR(30)   | Màu sắc của sản phẩm.         |
-| model_name    | VARCHAR(100)  | Tên mẫu (Model) của sản phẩm. |
-| status        | VARCHAR(20)   | Trạng thái của sản phẩm.      |
+ ### Dim_Geography
 
-### Dim_Geography
+ Stores geographic information.
 
-Lưu trữ thông tin vị trí địa lý.
+ | Attribute          | Data Type | Description                                                 |
+ | ------------------- | ------------ | ----------------------------------------------------- |
+ | geography_key       | INT          | Primary key for the geography table.                           |
+ | city                | VARCHAR(50) | Customer city.                             |
+ | country_name        | VARCHAR(50) | Country.                                             |
+ | postal_code         | VARCHAR(50)  | Postal code.                                         |
+ | sales_territory_key | INT          | Foreign key referencing `dim_sales_territory`. |
 
-| Thuộc tính          | Kiểu dữ liệu | Mô tả                                                 |
-| ------------------- | ------------ | ----------------------------------------------------- |
-| geography_key       | INT          | Khóa chính của bảng địa lý.                           |
-| city                | VARCHAR(50) | Thành phố của khách hàng.                             |
-| country_name        | VARCHAR(50) | Quốc gia.                                             |
-| postal_code         | VARCHAR(50)  | Mã bưu chính.                                         |
-| sales_territory_key | INT          | Khóa ngoại tham chiếu đến bảng `dim_sales_territory`. |
+ ### Dim_Sales_Territory
 
-### Dim_Sales_Territory
+ Separate sales territory information to reduce geographic redundancy.
+ | Attribute             | Data Type | Description                                |
+ | ---------------------- | ------------ | ------------------------------------ |
+ | sales_territory_key    | INT          | Primary key for the sales territory table. |
+ | sales_territory_region | VARCHAR(50) | Sales territory region.                  |
+ | sales_territory_group  | VARCHAR(50) | Sales territory group.                |
 
-Tách riêng thông tin vùng kinh doanh nhằm giảm dư thừa dữ liệu địa lý.
-| Thuộc tính             | Kiểu dữ liệu | Mô tả                                |
-| ---------------------- | ------------ | ------------------------------------ |
-| sales_territory_key    | INT          | Khóa chính của bảng vùng kinh doanh. |
-| sales_territory_region | VARCHAR(50) | Khu vực kinh doanh.                  |
-| sales_territory_group  | VARCHAR(50) | Nhóm vùng kinh doanh.                |
+ ### Dim_Date
 
-### Dim_Date
-
-Lưu trữ các thuộc tính thời gian phục vụ phân tích và Drill Down.
-| Thuộc tính | Kiểu dữ liệu | Mô tả                                       |
-| ---------- | ------------ | ------------------------------------------- |
-| date_key   | INT          | Khóa chính của bảng thời gian.              |
-| date       | DATE         | Ngày đầy đủ.                                |
-| day_name   | VARCHAR(20)  | Tên ngày trong tuần.                        |
+ Stores time attributes to support analysis and drill-down.
+ | Attribute | Data Type | Description                                       |
+ | ---------- | ------------ | ------------------------------------------- |
+ | date_key   | INT          | Primary key for the date table.              |
+ | date       | DATE         | Full date.                                |
+ | day_name   | VARCHAR(20)  | Day of the week name.                        |
 | month      | INT          | Tháng (1–12), dùng để sắp xếp `month_name`. |
 | month_name | VARCHAR(20)  | Tên tháng.                                  |
 | quarter    | INT          | Quý trong năm (1–4).                        |
 | year       | INT          | Năm.                                        |
 
 > **Feature Engineering**
-> 
-> - `Month`: Giá trị từ 1–12, dùng để sắp xếp đúng thứ tự các tháng trong Power BI.
-> - `Quarter`: Phân tích doanh thu theo quý và hỗ trợ Drill Down trên Dashboard.
+>
+>- `Month`: Values from 1–12, used to ensure correct month ordering in Power BI.
+>- `Quarter`: For quarterly revenue analysis and to support Drill Down on dashboards.
 
 ---
 
-## 3.2 Thiết lập ràng buộc dữ liệu (Constraints)
+## 3.2 Data Constraints
 
-Sau khi hoàn thành việc tạo các bảng trong Data Warehouse, tiến hành thiết lập **Primary Key** và **Foreign Key** nhằm đảm bảo tính toàn vẹn và nhất quán của dữ liệu.
+After creating the tables in the Data Warehouse, define **Primary Keys** and **Foreign Keys** to ensure data integrity and consistency.
 
 ### Primary Key
 
-Mỗi bảng Dimension sử dụng một khóa chính (**Primary Key**) để định danh duy nhất từng bản ghi. Bảng Fact sử dụng khóa chính tổng hợp (Composite Primary Key) bao gồm các khóa ngoại của các bảng Dimension.
+Each Dimension table uses a single-column **Primary Key** to uniquely identify records. The Fact table uses a composite primary key composed of the foreign keys to the Dimension tables.
 
-**Các khóa chính được tạo như sau:**
+**Primary keys should be defined as follows:**
 
-| Bảng | Primary Key |
+| Table | Primary Key |
 | --- | --- |
 | `dim_product` | `product_key` |
 | `dim_customer` | `customer_key` |
@@ -429,23 +427,23 @@ Mỗi bảng Dimension sử dụng một khóa chính (**Primary Key**) để đ
 | `dim_date` | `date_key` |
 | `fact_sales` | (`product_key`, `customer_key`, `geography_key`, `sales_territory_key`, `order_date_key`) |
 
-Ví dụ:
+Example:
 
 ```
-ALTERTABLE dim_customer
-ADDCONSTRAINT pk_dim_customer
-PRIMARYKEY (customer_key);
+ALTER TABLE dim_customer
+ADD CONSTRAINT pk_dim_customer
+PRIMARY KEY (customer_key);
 ```
 
 ---
 
 ### Foreign Key
 
-Bảng **fact_sales** sử dụng các khóa ngoại (**Foreign Key**) để liên kết với các bảng Dimension, đảm bảo mỗi bản ghi bán hàng đều tham chiếu đến dữ liệu mô tả tương ứng.
+The `fact_sales` table should include **Foreign Keys** referencing each Dimension table so that every sales record points to the corresponding descriptive data.
 
-**Các khóa ngoại được thiết lập như sau:**
+**Foreign keys mapping:**
 
-| Bảng Fact | Tham chiếu đến |
+| Fact Column | References |
 | --- | --- |
 | `product_key` | `dim_product(product_key)` |
 | `customer_key` | `dim_customer(customer_key)` |
@@ -453,26 +451,26 @@ Bảng **fact_sales** sử dụng các khóa ngoại (**Foreign Key**) để li�
 | `sales_territory_key` | `dim_sales_territory(sales_territory_key)` |
 | `order_date_key` | `dim_date(date_key)` |
 
-Ví dụ:
+Example:
 
 ```
-ALTERTABLE fact_sales
-ADDCONSTRAINT fk_fact_product
-FOREIGNKEY (product_key)
+ALTER TABLE fact_sales
+ADD CONSTRAINT fk_fact_product
+FOREIGN KEY (product_key)
 REFERENCES dim_product(product_key);
 ```
 
-Sau khi thiết lập các ràng buộc, mô hình Star Schema sẽ đảm bảo:
+After applying constraints, the Star Schema ensures:
 
-- Mỗi bản ghi trong bảng Fact đều tham chiếu đến các bản ghi hợp lệ trong các bảng Dimension.
-- Ngăn chặn việc chèn dữ liệu không hợp lệ hoặc làm mất tính nhất quán giữa các bảng.
-- Hỗ trợ tối ưu việc truy vấn và phân tích dữ liệu trên Data Warehouse.
+- Every Fact record references valid Dimension records.
+- Prevents insertion of invalid or inconsistent data across tables.
+- Supports reliable query performance and analysis on the Data Warehouse.
 
-## 3.3 Tối ưu truy vấn
+## 3.3 Query Optimization
 
-Để cải thiện hiệu năng khi truy vấn và trực quan hóa dữ liệu, tạo Index trên các khóa ngoại của bảng Fact.
+To improve query and visualization performance, create indexes on the Fact table's foreign keys.
 
-Ví dụ:
+Example:
 
 ```
 CREATE INDEX idx_fact_sales_product
@@ -485,16 +483,16 @@ CREATE INDEX idx_fact_sales_date
 ON fact_sales(order_date_key);
 ```
 
->**Lưu ý:** Mặc dù tập dữ liệu AdventureWorks trong dự án có quy mô không lớn, các chỉ mục (Index) vẫn được tạo trên các khóa ngoại của bảng `fact_sales` nhằm mô phỏng cách tối ưu truy vấn trong các hệ thống Data Warehouse thực tế, nơi bảng Fact có thể chứa hàng triệu bản ghi.
+> **Note:** Although the AdventureWorks dataset used in this project is not large, indexes are created on `fact_sales` foreign keys to simulate best practices in production Data Warehouses where Fact tables may contain millions of rows.
 
 ---
 
 
 # 4. SQL Analytics
 
-*(Sẽ bổ sung sau khi hoàn thành Data Warehouse)*
+*(To be added after the Data Warehouse is completed)*
 
-Ví dụ:
+Examples:
 
 - Sales Performance
 - Customer Analytics
@@ -507,9 +505,9 @@ Ví dụ:
 
 # 5. Power BI Dashboard
 
-*(Sẽ bổ sung sau)*
+*(To be added)*
 
-Bao gồm:
+Includes:
 
 - Executive Dashboard
 - Sales Dashboard
