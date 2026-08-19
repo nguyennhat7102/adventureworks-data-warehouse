@@ -4,7 +4,7 @@
  # 1. Project Overview
 
  <p align="center">
-     <img src="work_flow.png" width="700">
+     <img src="img/work_flow.png" width="700">
  </p>
 
  ### Objective
@@ -505,11 +505,19 @@ Examples:
 
 # 5. Power BI Dashboard
 
-*(To be added)*
-
 Includes:
 
-- Executive Dashboard
-- Sales Dashboard
+- Sales Overview Dashboard
+<p align="center">
+     <img src="img/Overview.png" width="700">
+</p>
+
 - Customer Dashboard
+<p align="center">
+     <img src="img/Customer.png" width="700">
+ </p>
+
 - Product Dashboard
+<p align="center">
+     <img src="img/Product.png" width="700">
+ </p>
